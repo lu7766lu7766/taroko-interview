@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation"
 export default () => {
-  return <main></main>
+  redirect("/backend")
+  return <div></div>
 }
