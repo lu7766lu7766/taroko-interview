@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { useApi } from "@/lib/Api"
 
+// not work well
+// 邏輯變複雜，且無法解決高頻率打api error問題，且網址不一樣（無法使用params），故繼續使用proxy
 export async function GET() {
   return NextResponse.json(await useApi("contact").getList())
 }
