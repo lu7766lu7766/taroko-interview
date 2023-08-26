@@ -1,6 +1,7 @@
 import _ from "lodash"
 import axios, { Method } from "axios"
 import urljoin from "url-join"
+import { Bus } from "../EventBus"
 
 type iConfig = {
   method: string
@@ -56,7 +57,7 @@ export default class BaseRequest<
     if (SUCCESS_CODE.includes(res.data.statusCode)) {
       return res.data
     } else {
-      alert(res.message)
+      Bus.emit("notification.error", res.message)
       throw res
     }
   }
@@ -77,7 +78,7 @@ export default class BaseRequest<
       default:
         throwE = { ...e, message: "system error!! please try again later" }
     }
-    alert(throwE.message)
+    Bus.emit("notification.error", throwE.message)
     throw throwE
   }
 }

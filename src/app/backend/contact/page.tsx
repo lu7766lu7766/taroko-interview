@@ -45,7 +45,7 @@ export default () => {
           </Button>
         </div>
         <div className="optional_area flex-1 flex justify-end items-center">
-          <Button variant="outlined" color="warning" onClick={() => setShowSort(true)} ref={anchorEl}>
+          <Button variant="outlined" color="info" onClick={() => setShowSort(true)} ref={anchorEl}>
             <SortByAlpha />
           </Button>
           <Popover

@@ -7,6 +7,7 @@ import BaseModal from "@/components/BaseModal"
 import Validation from "@/components/Validation"
 import { FieldValues, useForm } from "react-hook-form"
 import { updateSuccess } from "@/lib/Alert"
+import { wait } from "@/lib/Timer"
 
 const emptyData = {
   id: 0,
@@ -27,6 +28,7 @@ export default ({ getList }: { getList: () => void }) => {
   const onSubmit = async ({ first_name }: FieldValues) => {
     await api.update({ id: editData.id, first_name })
     updateSuccess()
+    await wait(2000)
     getList()
     setShow(false)
   }

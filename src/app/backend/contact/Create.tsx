@@ -7,6 +7,7 @@ import BaseModal from "@/components/BaseModal"
 import Validation from "@/components/Validation"
 import { FieldValues, useForm } from "react-hook-form"
 import { createSuccess } from "@/lib/Alert"
+import { wait } from "@/lib/Timer"
 
 const emptyData = {
   first_name: "",
@@ -29,6 +30,7 @@ export default ({ getList }: { getList: () => void }) => {
   const onSubmit = async (data: FieldValues) => {
     await api.create(data as iCreateContact)
     createSuccess()
+    await wait(2000)
     getList()
     setShow(false)
   }
