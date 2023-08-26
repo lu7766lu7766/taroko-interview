@@ -1,3 +1,5 @@
+import { isService } from "./System"
+
 type iCallback = {
   (detail: any): void
 }
@@ -28,7 +30,7 @@ class EventBus implements iBus {
   }
 
   public on(event: any, callback: iCallback): void {
-    if (typeof window === "undefined") return
+    if (isService) return
     this.callbacks[event] = callback
     document.addEventListener(event, (e: CustomEvent<unknown>) => {
       callback(e.detail)
@@ -36,12 +38,12 @@ class EventBus implements iBus {
   }
 
   public emit(event: string, detail?: unknown): void {
-    if (typeof window === "undefined") return
+    if (isService) return
     document.dispatchEvent(new CustomEvent(event, { detail }))
   }
 
   public off(event: string): void {
-    if (typeof window === "undefined") return
+    if (isService) return
     document.removeEventListener(event, this.callbacks[event])
   }
 }
