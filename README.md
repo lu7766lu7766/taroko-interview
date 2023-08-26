@@ -2,7 +2,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, you need to clone api project
+First, you need to clone api project and run
 
 ```bash
 # clone api project
