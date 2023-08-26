@@ -1,21 +1,27 @@
 "use client"
-import Button from "@mui/material/Button"
-import { AddCircleOutline, Delete, Edit } from "@mui/icons-material"
-import { Bus } from "../../../lib/EventBus"
-import Card from "@mui/material/Card"
-import Avatar from "@mui/material/Avatar"
+import { Button, Card, Avatar, Paper, MenuList, MenuItem, ListItemIcon, ListItemText, Popover } from "@mui/material"
+import { AddCircleOutline, Delete, Edit, SortByAlpha, Check } from "@mui/icons-material"
+import { Bus } from "@/lib/EventBus"
 import contactStyle from "./style.module.sass"
 import classNames from "classnames"
 import { useApi } from "@/lib/Api"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useRef, useMemo } from "react"
 import { iContactData } from "@/lib/Request/Contact"
 import CreateModal from "./Create"
 import UpdateModal from "./Update"
 import { deleteSuccess } from "@/lib/Alert"
+import _ from "lodash"
+import MyMenuItem from "@/components/MyMenuItem"
+
+const api = useApi("contact")
 
 export default () => {
-  const api = useApi("contact")
   const [datas, setDatas] = useState<iContactData[]>([])
+  const [showSort, setShowSort] = useState(false)
+  const [sort, setSort] = useState<null | { key: string; type: "desc" | "asc" }>(null)
+  const anchorEl = useRef(null)
+  const processedDatas = useMemo(() => (sort ? _.orderBy(datas, sort.key, sort.type) : datas), [datas, sort])
+
   const getList = async () => {
     const res = await api.getList()
     setDatas(res.data)
@@ -28,14 +34,59 @@ export default () => {
   useEffect(() => {
     getList()
   }, [])
+
   return (
     <>
       <div className="title text-2xl mb-2">Contact List</div>
-      <Button variant="outlined" endIcon={<AddCircleOutline />} onClick={() => Bus.emit("create.show")}>
-        Add
-      </Button>
+      <div className="flex">
+        <div className="button_area flex-1">
+          <Button variant="outlined" endIcon={<AddCircleOutline />} onClick={() => Bus.emit("create.show")}>
+            Add
+          </Button>
+        </div>
+        <div className="optional_area flex-1 flex justify-end items-center">
+          <Button variant="outlined" color="warning" onClick={() => setShowSort(true)} ref={anchorEl}>
+            <SortByAlpha />
+          </Button>
+          <Popover
+            open={showSort}
+            onClose={() => setShowSort(false)}
+            anchorEl={anchorEl.current}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <Paper sx={{ width: 320 }}>
+              <MenuList dense>
+                <MyMenuItem onClick={() => setSort(null)} checked={sort == null} title="none" />
+                <MyMenuItem
+                  onClick={() => setSort({ key: "first_name", type: "asc" })}
+                  checked={sort?.key == "first_name" && sort?.type == "asc"}
+                  title="First Name asc"
+                />
+                <MyMenuItem
+                  onClick={() => setSort({ key: "first_name", type: "desc" })}
+                  checked={sort?.key == "first_name" && sort?.type == "desc"}
+                  title="First Name desc"
+                />
+                <MyMenuItem
+                  onClick={() => setSort({ key: "last_name", type: "asc" })}
+                  checked={sort?.key == "last_name" && sort?.type == "asc"}
+                  title="Last Name asc"
+                />
+                <MyMenuItem
+                  onClick={() => setSort({ key: "last_name", type: "desc" })}
+                  checked={sort?.key == "last_name" && sort?.type == "desc"}
+                  title="Last Name desc"
+                />
+              </MenuList>
+            </Paper>
+          </Popover>
+        </div>
+      </div>
       <div className="container mt-4 flex flex-wrap">
-        {datas.map((data) => (
+        {processedDatas.map((data) => (
           <Card key={"user" + data.id} className={classNames(contactStyle.card, "flex")}>
             <Avatar className="flex-none mr-2">{data.first_name.substring(0, 1)}</Avatar>
             <div className="flex-1">

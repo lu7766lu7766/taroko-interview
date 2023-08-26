@@ -7,11 +7,13 @@ import BaseModal from "@/components/BaseModal"
 import Validation from "@/components/Validation"
 import { FieldValues, useForm } from "react-hook-form"
 import { updateSuccess } from "@/lib/Alert"
+
 const emptyData = {
   id: 0,
   first_name: "",
 }
 const api = useApi("contact")
+
 export default ({ getList }: { getList: () => void }) => {
   const {
     handleSubmit,
