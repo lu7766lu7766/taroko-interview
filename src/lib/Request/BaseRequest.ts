@@ -2,6 +2,7 @@ import _ from "lodash"
 import axios, { Method } from "axios"
 import urljoin from "url-join"
 import { Bus } from "../EventBus"
+import { isClient, isServer } from "../System"
 
 type iConfig = {
   method: string
@@ -14,10 +15,22 @@ export default class BaseRequest<
 > {
   config: T = {} as T
 
-  public baseUrls = ["/api"]
+  public baseUrls = isServer ? ["http://127.0.0.1:3000/api"] : ["/api"]
 
   get header() {
     return {}
+  }
+
+  loading() {
+    if (isClient) {
+      document.body.style.cursor = "wait"
+    }
+  }
+
+  default() {
+    if (isClient) {
+      document.body.style.cursor = "default"
+    }
   }
 
   async request(actionKey: keyof T, data: any = {}) {
@@ -27,13 +40,20 @@ export default class BaseRequest<
     let { uri, method } = config
     method = method.toUpperCase() as Method
 
-    while (/{\w+}/.test(uri)) {
-      const matchRes = uri.match(/{(\w+)}/)!
-      uri = uri.replace(matchRes[0], data[matchRes[1]])
+    if (isServer) {
+      while (/{\w+}/.test(uri)) {
+        const matchRes = uri.match(/{(\w+)}/)!
+        uri = uri.replace(matchRes[0], data[matchRes[1]])
+      }
+    } else {
+      while (/{\w+}/.test(uri)) {
+        const matchRes = uri.match(/{(\w+)}/)!
+        uri = uri.replace(matchRes[0], "")
+      }
     }
 
     try {
-      document.body.style.cursor = "wait"
+      this.loading()
       const res = await axios({
         baseURL: urljoin(...this.baseUrls),
         method,
@@ -44,10 +64,11 @@ export default class BaseRequest<
         responseType: "json",
         withCredentials: true,
       })
-      document.body.style.cursor = "default"
+
+      this.default()
       return this.resultHandler(res)
     } catch (e: any) {
-      document.body.style.cursor = "default"
+      this.default()
       return this.errorHandler(e)
     }
   }

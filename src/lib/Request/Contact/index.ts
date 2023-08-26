@@ -46,7 +46,7 @@ export default class extends BaseRequest<typeof config> {
     })
   }
 
-  delete({ id }: { id: number }) {
+  delete({ id }: { id: number | string }) {
     return this.request("delete", { id })
   }
 }

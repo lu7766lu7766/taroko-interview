@@ -1,2 +1,2 @@
 export const isClient = typeof window !== "undefined"
-export const isService = !isClient
+export const isServer = !isClient

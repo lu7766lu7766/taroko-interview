@@ -90,7 +90,7 @@ export default () => {
       <div className="container mt-4 flex flex-wrap">
         {processedDatas.map((data) => (
           <Card key={"user" + data.id} className={classNames(contactStyle.card, "flex")}>
-            <Avatar className="flex-none mr-2">{data.first_name.substring(0, 1)}</Avatar>
+            <Avatar className="flex-none mr-2">{data.first_name?.substring(0, 1)}</Avatar>
             <div className="flex-1">
               {data.first_name} {data.last_name}
               <div className="job text-sm">Job: {data.job}</div>
