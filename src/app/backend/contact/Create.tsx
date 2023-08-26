@@ -35,14 +35,14 @@ export default ({ getList }: { getList: () => void }) => {
     setShow(false)
   }
   useEffect(() => {
-    Bus.on("create.show", () => {
-      setEditData(_.cloneDeep(emptyData))
+    Bus.on("create.show", (data) => {
+      setEditData(_.cloneDeep(data ? data : emptyData))
       setShow(true)
     })
     return () => {
       Bus.off("create.show")
     }
-  })
+  }, [])
   return (
     <BaseModal title="Create" show={show} onClose={() => setShow(false)} onSubmit={handleSubmit(onSubmit)}>
       <Validation

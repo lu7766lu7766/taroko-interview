@@ -40,7 +40,7 @@ export default ({ getList }: { getList: () => void }) => {
     return () => {
       Bus.off("update.show")
     }
-  })
+  }, [])
   return (
     <BaseModal title="Update" show={show} onClose={() => setShow(false)} onSubmit={handleSubmit(onSubmit)}>
       <Validation

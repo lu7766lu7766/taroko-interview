@@ -1,6 +1,6 @@
 "use client"
-import { Button, Card, Avatar, Paper, MenuList, MenuItem, ListItemIcon, ListItemText, Popover } from "@mui/material"
-import { AddCircleOutline, Delete, Edit, SortByAlpha, Check } from "@mui/icons-material"
+import { Button, Card, Avatar, Paper, MenuList, Popover } from "@mui/material"
+import { AddCircleOutline, Delete, Edit, SortByAlpha, ContentCopy } from "@mui/icons-material"
 import { Bus } from "@/lib/EventBus"
 import contactStyle from "./style.module.sass"
 import classNames from "classnames"
@@ -100,6 +100,9 @@ export default () => {
               </Button>
               <Button variant="outlined" color="error" endIcon={<Delete />} onClick={() => doDelete(data.id)}>
                 Delete
+              </Button>
+              <Button variant="outlined" color="info" endIcon={<ContentCopy />} onClick={() => Bus.emit("create.show", data)}>
+                Duplicate
               </Button>
             </div>
           </Card>
