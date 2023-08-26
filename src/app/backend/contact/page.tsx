@@ -12,6 +12,7 @@ import UpdateModal from "./Update"
 import { deleteSuccess } from "@/lib/Alert"
 import _ from "lodash"
 import MyMenuItem from "@/components/MyMenuItem"
+import { wait } from "@/lib/Timer"
 
 const api = useApi("contact")
 
@@ -29,6 +30,7 @@ export default () => {
   const doDelete = async (id: number) => {
     await api.delete({ id })
     deleteSuccess()
+    await wait(2000)
     getList()
   }
   useEffect(() => {
