@@ -5,7 +5,7 @@
   },
   "create": {
     "method": "post",
-    "uri": "{id}"
+    "uri": ""
   },
   "update": {
     "method": "patch",

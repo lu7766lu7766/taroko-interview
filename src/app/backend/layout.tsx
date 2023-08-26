@@ -8,7 +8,7 @@ export default ({ children }: { children: React.ReactNode }) => {
   const [showSmMenu, setShowSmMenu] = useState(false)
   return (
     <>
-      <header className="header fixed h-16 p-4 w-full bg-slate-800 text-gray-100 flex">
+      <header className="header fixed top-0 h-16 p-4 w-full bg-slate-800 text-gray-100 flex">
         <Menu
           className="absolute hidden sm:block"
           onClick={() => {
@@ -17,9 +17,9 @@ export default ({ children }: { children: React.ReactNode }) => {
         />
         <div className="title text-lg flex-1 flex sm:justify-center">Tacoko</div>
       </header>
-      <div className="pt-16 flex">
+      <div className="pt-16 flex min-h-screen">
         <div
-          className={classNames("menu py-4 w-48 h-screen max-h-screen overflow-y-auto bg-slate-300 sm:fixed sm:-left-full", {
+          className={classNames("menu py-4 w-48 overflow-y-auto bg-slate-300 sm:fixed sm:-left-full", {
             active: showSmMenu,
           })}
         >

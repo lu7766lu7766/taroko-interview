@@ -26,9 +26,9 @@ export default class BaseRequest<
     let { uri, method } = config
     method = method.toUpperCase() as Method
 
-    while (/{[\w]+}/.test(uri)) {
+    while (/{\w+}/.test(uri)) {
       const matchRes = uri.match(/{(\w+)}/)!
-      uri.replace(matchRes[0], data[matchRes[1]])
+      uri = uri.replace(matchRes[0], data[matchRes[1]])
     }
 
     try {
@@ -52,9 +52,8 @@ export default class BaseRequest<
   }
 
   private resultHandler(res: any) {
-    const SUCCESS_CODE = 200
-    const code = res.data.statusCode
-    if (code == SUCCESS_CODE) {
+    const SUCCESS_CODE = [200, 201]
+    if (SUCCESS_CODE.includes(res.data.statusCode)) {
       return res.data
     } else {
       alert(res.message)

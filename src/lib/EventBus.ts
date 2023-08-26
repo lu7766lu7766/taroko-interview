@@ -1,5 +1,5 @@
 type iCallback = {
-  (detail: unknown): void
+  (detail: any): void
 }
 type iCallbackContainer = {
   [key: string]: iCallback
@@ -28,6 +28,7 @@ class EventBus implements iBus {
   }
 
   public on(event: any, callback: iCallback): void {
+    if (typeof window === "undefined") return
     this.callbacks[event] = callback
     document.addEventListener(event, (e: CustomEvent<unknown>) => {
       callback(e.detail)
@@ -35,10 +36,12 @@ class EventBus implements iBus {
   }
 
   public emit(event: string, detail?: unknown): void {
+    if (typeof window === "undefined") return
     document.dispatchEvent(new CustomEvent(event, { detail }))
   }
 
   public off(event: string): void {
+    if (typeof window === "undefined") return
     document.removeEventListener(event, this.callbacks[event])
   }
 }

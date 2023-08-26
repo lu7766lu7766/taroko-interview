@@ -1,20 +1,14 @@
 import config from "./config.json"
 import BaseRequest from "../BaseRequest"
-
-type iCreateData = {
-  id: number
-  contact: {
-    first_name: string
-    last_name: string
-    job: string
-    description: string
-  }
+export type iCreateContact = {
+  first_name: string
+  last_name: string
+  job: string
+  description: string
 }
-type iUpdateData = {
+export type iUpdateContact = {
   id: number
-  info: {
-    first_name: string
-  }
+  first_name: string
 }
 export type iContactData = {
   id: number
@@ -39,15 +33,20 @@ export default class extends BaseRequest<typeof config> {
     return this.request("list")
   }
 
-  create(data: iCreateData) {
-    return this.request("create", data)
+  create(contact: iCreateContact) {
+    return this.request("create", {
+      contact,
+    })
   }
 
-  update(data: iUpdateData) {
-    return this.request("update", data)
+  update({ id, ...info }: iUpdateContact) {
+    return this.request("update", {
+      id,
+      info,
+    })
   }
 
-  delete(data: { id: number }) {
-    return this.request("delete", data)
+  delete({ id }: { id: number }) {
+    return this.request("delete", { id })
   }
 }
