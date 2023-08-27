@@ -41,16 +41,9 @@ export default class BaseRequest<
     let { uri, method } = config
     method = method.toUpperCase() as Method
 
-    if (isServer) {
-      while (/{\w+}/.test(uri)) {
-        const matchRes = uri.match(/{(\w+)}/)!
-        uri = uri.replace(matchRes[0], data[matchRes[1]])
-      }
-    } else {
-      while (/{\w+}/.test(uri)) {
-        const matchRes = uri.match(/{(\w+)}/)!
-        uri = uri.replace(matchRes[0], "")
-      }
+    while (/{\w+}/.test(uri)) {
+      const matchRes = uri.match(/{(\w+)}/)!
+      uri = uri.replace(matchRes[0], data[matchRes[1]])
     }
 
     try {
